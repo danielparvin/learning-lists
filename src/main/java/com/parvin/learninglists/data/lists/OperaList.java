@@ -1,4 +1,4 @@
-package com.parvin.learninglists.lists;
+package com.parvin.learninglists.data.lists;
 
 import javax.persistence.Entity;
 
