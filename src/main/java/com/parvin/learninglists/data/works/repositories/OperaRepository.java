@@ -1,4 +1,4 @@
-package com.parvin.learninglists.repositories.works;
+package com.parvin.learninglists.data.works.repositories;
 
 import org.springframework.data.repository.CrudRepository;
 
