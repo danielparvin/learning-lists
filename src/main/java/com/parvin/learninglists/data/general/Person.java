@@ -1,4 +1,4 @@
-package com.parvin.learninglists.data;
+package com.parvin.learninglists.data.general;
 
 import java.time.LocalDate;
 

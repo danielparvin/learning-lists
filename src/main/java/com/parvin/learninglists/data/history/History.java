@@ -10,7 +10,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
-import com.parvin.learninglists.data.Consumer;
+import com.parvin.learninglists.data.general.Consumer;
 import com.parvin.learninglists.data.works.Work;
 
 import lombok.Getter;

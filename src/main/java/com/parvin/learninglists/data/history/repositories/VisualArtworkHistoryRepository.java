@@ -1,9 +1,9 @@
 package com.parvin.learninglists.data.history.repositories;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.parvin.learninglists.data.works.VisualArtwork;
 
-public interface VisualArtworkHistoryRepository extends CrudRepository<VisualArtwork, Long> {
+public interface VisualArtworkHistoryRepository extends PagingAndSortingRepository<VisualArtwork, Long> {
 
 }

@@ -1,9 +1,9 @@
 package com.parvin.learninglists.data.works.repositories;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.parvin.learninglists.data.works.musicalstage.Opera;
 
-public interface OperaRepository extends CrudRepository<Opera, Long> {
+public interface OperaRepository extends PagingAndSortingRepository<Opera, Long> {
 
 }
