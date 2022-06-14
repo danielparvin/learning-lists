@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -43,6 +44,24 @@ public class PersonController {
 			return ResponseEntity.notFound().build();
 		}
     }
+	
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<Person> updatePersonById(@RequestBody Person newPerson, @PathVariable Long id) {
+		Person updatedPerson = personRepo.findById(id)
+				.map(person -> {
+					person.setBirthDate(newPerson.getBirthDate());
+					person.setDeathDate(newPerson.getDeathDate());
+					person.setFirstName(newPerson.getFirstName());
+					person.setLastName(newPerson.getLastName());
+					person.setSex(newPerson.getSex());
+					return personRepo.save(person);
+				})
+				.orElseGet(() -> {
+					newPerson.setId(id);
+					return personRepo.save(newPerson);
+				});
+		return ResponseEntity.ok(updatedPerson);
+	}
 	
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Person> deletePersonById(@PathVariable("id") Long id) {
