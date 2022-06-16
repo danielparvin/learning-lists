@@ -1,11 +1,13 @@
 package com.parvin.learninglists.api;
 
-import static com.parvin.learninglists.Constants.API_BASE;
-import static com.parvin.learninglists.Constants.APPLICATION_JSON;
+import static com.parvin.learninglists.Constants.*;
 
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,6 +36,14 @@ public class PersonController {
 	@PostMapping
 	public ResponseEntity<Person> createPerson(@RequestBody Person person) {
 		return ResponseEntity.ok(personRepo.save(person));
+	}
+
+	@GetMapping
+	public ResponseEntity<Page<Person>> getPersons( // TODO Add default sort direction.
+			@RequestParam(name = "sort_by", defaultValue = DEFAULT_SORT_BY_STRING) String sortBy,
+			@RequestParam(name = "page_size", defaultValue = DEFAULT_PAGE_SIZE_STRING) int pageSize, 
+			@RequestParam(name = "page_number", defaultValue = DEFAULT_PAGE_NUMBER_STRING) int pageNumber) {
+		return ResponseEntity.ok(personRepo.findAll(PageRequest.of(pageSize, pageNumber, Sort.by(sortBy))));
 	}
 	
 	@GetMapping(value = "/{id}")

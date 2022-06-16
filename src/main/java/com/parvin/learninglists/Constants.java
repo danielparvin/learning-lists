@@ -6,7 +6,8 @@ public class Constants {
 
 	public static final String DEFAULT_PAGE_NUMBER_STRING = "0";
 	public static final String DEFAULT_PAGE_SIZE_STRING = "10";
-	
+	public static final String DEFAULT_SORT_BY_STRING = "id";
+
 	private Constants() {
 		throw new IllegalStateException("Utility class");
 	}
