@@ -15,8 +15,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@Entity
-public class AppUser {
+@Entity(name = "app_user")
+public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

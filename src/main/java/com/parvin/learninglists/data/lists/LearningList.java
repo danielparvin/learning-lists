@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
-import com.parvin.learninglists.data.general.AppUser;
+import com.parvin.learninglists.data.general.User;
 import com.parvin.learninglists.data.works.Work;
 
 import lombok.Getter;
@@ -26,7 +26,7 @@ public abstract class LearningList<T extends Work> {
 	private Long id;
 	private String name;
 	@ManyToOne
-	private AppUser createdBy;
+	private User createdBy;
 	@OneToMany
 	@JoinTable(joinColumns = {@JoinColumn(name = "list_id")}, 
 		inverseJoinColumns = {@JoinColumn(name = "work_id")})

@@ -1,4 +1,4 @@
-package com.parvin.learninglists.api;
+package com.parvin.learninglists.api.general;
 
 import static com.parvin.learninglists.Constants.*;
 
@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +32,7 @@ import com.parvin.learninglists.data.general.repositories.PersonRepository;
 				)
 public class PersonController {
 	@Autowired
-	PersonRepository personRepo;
+	private PersonRepository personRepo;
 	
 	@PostMapping
 	public ResponseEntity<Person> createPerson(@RequestBody Person person) {
@@ -39,15 +40,17 @@ public class PersonController {
 	}
 
 	@GetMapping
-	public ResponseEntity<Page<Person>> getPersons( // TODO Add default sort direction.
+	public ResponseEntity<Page<Person>> getPersons(
 			@RequestParam(name = "sort_by", defaultValue = DEFAULT_SORT_BY_STRING) String sortBy,
+			@RequestParam(name = "sort_direction", defaultValue = DEFAULT_SORT_DIRECTION_STRING) String sortDirection,
 			@RequestParam(name = "page_size", defaultValue = DEFAULT_PAGE_SIZE_STRING) int pageSize, 
 			@RequestParam(name = "page_number", defaultValue = DEFAULT_PAGE_NUMBER_STRING) int pageNumber) {
-		return ResponseEntity.ok(personRepo.findAll(PageRequest.of(pageSize, pageNumber, Sort.by(sortBy))));
+		return ResponseEntity.ok(personRepo.findAll(
+				PageRequest.of(pageSize, pageNumber, Sort.by(Direction.fromString(sortDirection), sortBy))));
 	}
 	
 	@GetMapping(value = "/{id}")
-    public ResponseEntity<Person> getPersonById(@PathVariable("id") Long id) {
+    public ResponseEntity<Person> getPerson(@PathVariable("id") Long id) {
 		Optional<Person> optionalPerson = personRepo.findById(id);
 		if (optionalPerson.isPresent()) {
 			return ResponseEntity.ok(optionalPerson.get());
@@ -57,7 +60,7 @@ public class PersonController {
     }
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Person> updatePersonById(@RequestBody Person newPerson, @PathVariable Long id) {
+	public ResponseEntity<Person> updatePerson(@RequestBody Person newPerson, @PathVariable Long id) {
 		Person updatedPerson = personRepo.findById(id)
 				.map(person -> {
 					person.setBirthDate(newPerson.getBirthDate());
@@ -75,7 +78,7 @@ public class PersonController {
 	}
 	
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Person> deletePersonById(@PathVariable("id") Long id) {
+	public ResponseEntity<Person> deletePerson(@PathVariable("id") Long id) {
 		Optional<Person> optionalPerson = personRepo.findById(id);
 		if (optionalPerson.isEmpty()) {
 			return ResponseEntity.notFound().build();
