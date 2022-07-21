@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.parvin.learninglists.data.lists.BookList;
 import com.parvin.learninglists.data.lists.repositories.BookListRepository;
+import com.parvin.learninglists.data.works.literary.Book;
 
 @RestController
 @ResponseBody
@@ -63,7 +65,20 @@ public class BookListController {
 	}
 	
 	// TODO Add endpoints for adding and removing individual and multiple books from the list.
-	// TODO Add endpoint for updating the name of the list.
+	
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<BookList> updateName(@RequestBody BookList newList, @PathVariable Long id) {
+		BookList updatedList = repo.findById(id)
+				.map(list -> {
+					list.setName(newList.getName());
+					return repo.save(list);
+				})
+				.orElseGet(() -> {
+					newList.setId(id);
+					return repo.save(newList);
+				});
+		return ResponseEntity.ok(updatedList);
+	}
 	
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<BookList> delete(@PathVariable("id") Long id) {
