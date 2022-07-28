@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.parvin.learninglists.model.works.Work;
@@ -19,12 +18,12 @@ public abstract class WorkService<R extends PagingAndSortingRepository<W, Long>,
 		return repo.save(newWork);
 	}
 	
-	public Optional<W> getWorkBy(Long id) {
+	public Optional<W> getWorkById(Long id) {
 		return repo.findById(id);
 	}
 	
-	public Page<W> getWorks(String sortBy, String sortDirection, int pageSize, int pageNumber) {
-		return repo.findAll(PageRequest.of(pageSize, pageNumber, Sort.by(Direction.fromString(sortDirection), sortBy)));
+	public Page<W> getPage(Sort sort, int pageSize, int pageNumber) {
+		return repo.findAll(PageRequest.of(pageSize, pageNumber, sort));
 	}
 	
 	public void delete(W work) {
